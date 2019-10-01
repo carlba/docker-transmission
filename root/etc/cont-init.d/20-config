@@ -18,6 +18,9 @@ if [ ! -z "$USER" ] && [ ! -z "$PASS" ]; then
 	sed -i "/rpc-password/c\    \"rpc-password\": \"$PASS\"," /config/settings.json
 fi
 
+sed '/script-torrent-done-enabled/c\    "script-torrent-done-enabled": true,' /config/settings.json > /config/settings.temp && cp /config/settings.temp /config/settings.json
+sed '/script-torrent-done-filename/c\    "script-torrent-done-filename": "/scripts/update_plex.sh",' /config/settings.json > /config/settings.temp && cp /config/settings.temp /config/settings.json
+
 # permissions
 chown abc:abc \
 	/config/settings.json \
@@ -25,6 +28,9 @@ chown abc:abc \
 	/downloads \
 	/downloads/complete \
 	/downloads/incomplete \
-	/watch
+	/watch \
 
-chmod 755 /config/blocklist-update.sh
+chown -R abc:abc /scripts
+
+chmod +x /config/blocklist-update.sh
+chmod +x /scripts/update_plex.sh
